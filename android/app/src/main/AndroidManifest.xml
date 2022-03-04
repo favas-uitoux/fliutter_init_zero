@@ -2,7 +2,9 @@
     package="com.example.fliutter_init_zero">
    <application
         android:label="fliutter_init_zero"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+       android:usesCleartextTraffic="true"
+       >
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

@@ -1,6 +1,10 @@
 import 'dart:ui';
 
+import 'package:fliutter_init_zero/screens/dashboard_sceen/DashboardScreen.dart';
 import 'package:flutter/material.dart';
+import 'dart:convert' as convert;
+
+import 'package:http/http.dart' as http;
 
 class LoginScreen extends StatelessWidget {
   @override
@@ -85,7 +89,11 @@ class _MyHomePageState extends State<MyHomePage> {
                 backgroundColor: Colors.blue,
                 textStyle: const TextStyle(fontSize: 20),
               ),
-              onPressed: () {},
+              onPressed: () {
+
+                apicall(context);
+
+              },
               child: const Text('Login'),
             ),
           ),
@@ -96,5 +104,45 @@ class _MyHomePageState extends State<MyHomePage> {
           )),
       // This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+}
+
+
+void apicall(BuildContext context) async {
+  // This example uses the Google Books API to search for books about http.
+  // https://developers.google.com/books/docs/overview
+  //var url =
+  var client = http.Client();
+  var response = await client.post(
+      Uri.https('www.milantex.in', 'zpa/login.php'),
+      body: {'apikey': '100', 'mob': '8156846432','pswd': '123456',});
+
+  // Await the http get response, then decode the json-formatted response.
+  //var response = await http.post(url);
+  if (response.statusCode == 200) {
+
+    print('Response body: ${response.body}');
+
+    var jsonResponse =
+    convert.jsonDecode(response.body) as Map<String, dynamic>;
+    // var itemCount = jsonResponse['result'];
+  //  print('Number of books about http: $jsonResponse .');
+
+
+
+    if (jsonResponse["customer_id"]?.isEmpty ?? false) {
+      //
+
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => DashBoardScreen(),
+          ));
+
+
+    }
+
+
+  } else {
+    print('Request failed with status: ${response.statusCode}.');
   }
 }
