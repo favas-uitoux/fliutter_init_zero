@@ -39,6 +39,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+
+    saveDashBoard(context);
     return Scaffold(
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
@@ -57,3 +59,43 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
+
+
+void saveDashBoard(BuildContext context) async {
+  // This example uses the Google Books API to search for books about http.
+  // https://developers.google.com/books/docs/overview
+  //var url =
+  var client = http.Client();
+  var response = await client.post(
+      Uri.https('www.milantex.in', 'zpa/read_dasboard_category_customer.php'),
+      body: {'apikey': '100', });
+
+  // Await the http get response, then decode the json-formatted response.
+  //var response = await http.post(url);
+  if (response.statusCode == 200) {
+
+    print('Response body: ${response.body}');
+
+    var jsonResponse =
+    convert.jsonDecode(response.body) as Map<String, dynamic>;
+
+var details=jsonResponse["details"];
+
+ var sze=   details.length;
+
+    for( var i = 0 ; i < sze; i++ ) {
+
+      print('ok ${i}');
+
+    }
+
+
+
+
+
+
+
+  } else {
+    print('Request failed with status: ${response.statusCode}.');
+  }
+}
