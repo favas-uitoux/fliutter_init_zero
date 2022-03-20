@@ -125,12 +125,11 @@ void apicall(BuildContext context) async {
 
     var jsonResponse =
     convert.jsonDecode(response.body) as Map<String, dynamic>;
-    // var itemCount = jsonResponse['result'];
-  //  print('Number of books about http: $jsonResponse .');
 
 
+   String cust_id= jsonResponse["customer_id"];
 
-    if (jsonResponse["customer_id"]?.isEmpty ?? false) {
+    if (cust_id.length>0) {
       //
 
       Navigator.pushReplacement(
@@ -140,6 +139,10 @@ void apicall(BuildContext context) async {
 
 
     }
+    else
+      {
+        print('Missing cust id');
+      }
 
 
   } else {
