@@ -1,11 +1,18 @@
 import 'dart:ui';
 
+import 'package:fliutter_init_zero/database/dao/DashGroupDao.dart';
+import 'package:fliutter_init_zero/database/database.dart';
+import 'package:fliutter_init_zero/database/entity/DashGroupEntity.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert' as convert;
 
 import 'package:http/http.dart' as http;
 
+late  DashGroupDao dashGroupDao;
 class DashBoardScreen extends StatelessWidget {
+
+
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -40,6 +47,8 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
 
+
+    init();
     saveDashBoard(context);
     return Scaffold(
       appBar: AppBar(
@@ -48,7 +57,29 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Center(
-          child:Text("Bismillah")
+          child:
+          Container(
+            width: 500,
+            child: TextButton(
+              style: TextButton.styleFrom(
+
+                // padding: const EdgeInsets.all(16.0),
+                primary: Colors.brown,
+                backgroundColor: Colors.blue,
+                textStyle: const TextStyle(fontSize: 20),
+              ),
+              onPressed: ()  async {
+
+
+
+             //  Future<int?> cnt = dashGroupDao.getCNT() ;
+               int? cnt = await dashGroupDao.getCNT() ;
+               print("count=  ${cnt}");
+
+              },
+              child: const Text('Login'),
+            ),
+          ),
 
 
 
@@ -62,9 +93,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
 
 void saveDashBoard(BuildContext context) async {
-  // This example uses the Google Books API to search for books about http.
-  // https://developers.google.com/books/docs/overview
-  //var url =
+
+
+
   var client = http.Client();
   var response = await client.post(
       Uri.https('www.milantex.in', 'zpa/read_dasboard_category_customer.php'),
@@ -87,6 +118,8 @@ var details=jsonResponse["details"];
 
       print('ok ${i}');
 
+      await dashGroupDao.saveDashGroup(new DashGroup(0, 1, 1,"","",0,0,"","" ));
+
     }
 
 
@@ -98,4 +131,15 @@ var details=jsonResponse["details"];
   } else {
     print('Request failed with status: ${response.statusCode}.');
   }
+}
+
+
+void init() async
+{
+
+  final database = await $FloorAppDatabase.databaseBuilder('app_database.db').build();
+
+
+    dashGroupDao = database.dashGroupDao;
+
 }
